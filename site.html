@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10x Analyst — AI Data Analysis</title>
+  <meta name="description" content="Upload CSV, PDF, Excel files and ask questions. AI analyzes your data and provides insights in real-time." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --fg: #e8e8e8;
+      --dim: #666;
+      --border: #222;
+      --accent: #fff;
+      --surface: #111;
+      --hover: #1a1a1a;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 14px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    a {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* --- Nav --- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      border: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--dim);
+      border: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-cta {
+      font-size: 13px;
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--fg) !important;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .nav-cta:hover {
+      background: var(--accent);
+      color: var(--bg) !important;
+      border-color: var(--accent);
+    }
+
+    /* --- Hero --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 32px 80px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 12px;
+      color: var(--dim);
+      margin-bottom: 40px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--accent);
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .hero p {
+      font-size: clamp(14px, 1.5vw, 16px);
+      color: var(--dim);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: transparent;
+      color: var(--fg);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 400;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-secondary:hover {
+      border-color: var(--dim);
+      color: var(--accent);
+    }
+
+    .hero-terminal {
+      margin-top: 80px;
+      width: 100%;
+      max-width: 580px;
+      text-align: left;
+    }
+
+    .terminal-window {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .terminal-title {
+      font-size: 11px;
+      color: var(--dim);
+      margin-left: 8px;
+    }
+
+    .terminal-body {
+      padding: 20px;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .terminal-body .prompt {
+      color: var(--dim);
+    }
+
+    .terminal-body .cmd {
+      color: var(--accent);
+    }
+
+    .terminal-body .output {
+      color: var(--dim);
+      font-size: 12px;
+    }
+
+    .terminal-body .success {
+      color: #4ade80;
+    }
+
+    .terminal-body .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: var(--accent);
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* --- Features --- */
+    .section {
+      padding: 120px 32px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 16px;
+    }
+
+    .section h2 {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .section > p {
+      color: var(--dim);
+      max-width: 560px;
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 56px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      padding: 32px;
+      transition: background 0.2s;
+    }
+    .feature-card:hover {
+      background: var(--hover);
+    }
+
+    .feature-icon {
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      color: var(--dim);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* --- How it works --- */
+    .steps {
+      counter-reset: step;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-number {
+      counter-increment: step;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dim);
+    }
+
+    .step-content h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      font-size: 13px;
+      color: var(--dim);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* --- File types --- */
+    .file-types {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .file-tag {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--dim);
+      transition: all 0.2s;
+    }
+    .file-tag:hover {
+      border-color: var(--dim);
+      color: var(--fg);
+    }
+
+    /* --- Stack --- */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .stack-item {
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .stack-item:hover {
+      border-color: var(--dim);
+    }
+
+    .stack-item .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+
+    .stack-item .value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* --- CTA --- */
+    .cta-section {
+      text-align: center;
+      padding: 120px 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .cta-section h2 {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      color: var(--dim);
+      margin-bottom: 40px;
+      font-weight: 300;
+      font-size: 15px;
+    }
+
+    .cta-code {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 32px;
+      font-size: 14px;
+      margin-bottom: 32px;
+      user-select: all;
+    }
+
+    .cta-code .prompt {
+      color: var(--dim);
+    }
+
+    .cta-code .cmd {
+      color: var(--accent);
+    }
+
+    /* --- Footer --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 32px;
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-size: 12px;
+      color: var(--dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--dim);
+      border: none;
+    }
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 640px) {
+      nav {
+        padding: 12px 20px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        padding: 100px 20px 60px;
+      }
+      .section {
+        padding: 80px 20px;
+      }
+      .step {
+        flex-direction: column;
+        gap: 12px;
+      }
+      footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">10x analyst_</a>
+    <ul class="nav-links">
+      <li><a href="#features">features</a></li>
+      <li><a href="#how">how it works</a></li>
+      <li><a href="#stack">stack</a></li>
+    </ul>
+    <a href="https://github.com/10xDotIn/10x-analyst" class="nav-cta" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      open source
+    </div>
+
+    <h1>analyze data<br/>with one prompt</h1>
+    <p>Upload CSV, PDF, or Excel files. Ask a question. Get instant AI-powered insights with real-time streaming responses.</p>
+
+    <div class="hero-actions">
+      <a href="https://github.com/10xDotIn/10x-analyst" class="btn-primary" target="_blank" rel="noopener">
+        Clone repo
+        <span>&rarr;</span>
+      </a>
+      <a href="#how" class="btn-secondary">
+        How it works
+      </a>
+    </div>
+
+    <div class="hero-terminal">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="terminal-dot"></span>
+          <span class="terminal-dot"></span>
+          <span class="terminal-dot"></span>
+          <span class="terminal-title">terminal</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="prompt">$</span> <span class="cmd">git clone https://github.com/10xDotIn/10x-analyst.git</span></div>
+          <div><span class="prompt">$</span> <span class="cmd">cd 10x-analyst</span></div>
+          <div><span class="prompt">$</span> <span class="cmd">bash setup.sh</span></div>
+          <div class="output"><br/><span class="success">[+]</span> Node.js found: v22.0.0</div>
+          <div class="output"><span class="success">[+]</span> Dependencies installed</div>
+          <div class="output"><span class="success">[+]</span> TypeScript: zero errors</div>
+          <div class="output"><span class="success">[+]</span> Backend server running</div>
+          <div class="output"><br/><span class="success">10x Analyst is ready!</span></div>
+          <div class="output">Open: http://localhost:5173<span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="section-label">// features</div>
+    <h2>built for real analysis</h2>
+    <p>Not a toy demo. A full-stack app with file parsing, persistent chat history, and real-time AI streaming.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">&uarr;</span>
+        <h3>file upload</h3>
+        <p>Drop CSV, Excel, PDF, or text files. Server-side parsing extracts structured data for AI context.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&rsaquo;_</span>
+        <h3>real-time streaming</h3>
+        <p>Responses stream word-by-word via SSE. No waiting for complete responses. Just like Claude web.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">#</span>
+        <h3>markdown rendering</h3>
+        <p>Code blocks with copy button. Tables. Links. Bold, italic, headings. Full markdown in responses.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">[]</span>
+        <h3>chat persistence</h3>
+        <p>SQLite-backed history. Create, rename, delete conversations. Pick up where you left off.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&frac12;</span>
+        <h3>dark + light mode</h3>
+        <p>Full semantic token design system. Toggle between dark and light. Every element adapts.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">&lt;/&gt;</span>
+        <h3>embeddable widget</h3>
+        <p>Build as a widget. Embed on any site with a single script tag. Floating button + popup chat.</p>
+      </div>
+    </div>
+
+    <div class="file-types">
+      <span class="file-tag">.csv</span>
+      <span class="file-tag">.xlsx</span>
+      <span class="file-tag">.xls</span>
+      <span class="file-tag">.pdf</span>
+      <span class="file-tag">.txt</span>
+      <span class="file-tag">.md</span>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how">
+    <div class="section-label">// how it works</div>
+    <h2>three steps</h2>
+    <p>Clone, run, analyze. No config files. No environment setup. One command.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>clone + run setup</h3>
+          <p>Clone the repo. Run <code>bash setup.sh</code> (Mac/Linux) or double-click <code>setup.bat</code> (Windows). It installs dependencies, checks TypeScript, starts both servers.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>upload your data</h3>
+          <p>Drag a CSV, Excel spreadsheet, or PDF into the chat. The backend parses it, extracts structured data, and makes it available as context for every question you ask.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>ask questions</h3>
+          <p>Ask anything about your data. The AI streams its response in real-time, complete with formatted tables, charts recommendations, and actionable insights.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="section" id="stack">
+    <div class="section-label">// tech stack</div>
+    <h2>what powers it</h2>
+    <p>Modern, minimal dependencies. No bloat.</p>
+
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="label">frontend</div>
+        <div class="value">React 19 + Vite</div>
+      </div>
+      <div class="stack-item">
+        <div class="label">styling</div>
+        <div class="value">Tailwind CSS v4</div>
+      </div>
+      <div class="stack-item">
+        <div class="label">language</div>
+        <div class="value">TypeScript</div>
+      </div>
+      <div class="stack-item">
+        <div class="label">backend</div>
+        <div class="value">Express 5</div>
+      </div>
+      <div class="stack-item">
+        <div class="label">database</div>
+        <div class="value">SQLite</div>
+      </div>
+      <div class="stack-item">
+        <div class="label">ai</div>
+        <div class="value">OpenAnalyst API</div>
+      </div>
+      <div class="stack-item">
+        <div class="label">icons</div>
+        <div class="value">Lucide React</div>
+      </div>
+      <div class="stack-item">
+        <div class="label">file parsing</div>
+        <div class="value">csv-parse + xlsx</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>try it now</h2>
+    <p>One command to install and run.</p>
+    <div class="cta-code">
+      <span class="prompt">$</span> <span class="cmd">git clone https://github.com/10xDotIn/10x-analyst.git && cd 10x-analyst && bash setup.sh</span>
+    </div>
+    <br/><br/>
+    <a href="https://github.com/10xDotIn/10x-analyst" class="btn-primary" target="_blank" rel="noopener">
+      View on GitHub
+      <span>&rarr;</span>
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-left">
+      10x analyst_ &mdash; built by <a href="https://github.com/10xDotIn" target="_blank" rel="noopener">10xDotIn</a>
+    </div>
+    <ul class="footer-links">
+      <li><a href="https://github.com/10xDotIn/10x-analyst" target="_blank" rel="noopener">github</a></li>
+      <li><a href="https://github.com/10xDotIn/10x-analyst/issues" target="_blank" rel="noopener">issues</a></li>
+      <li><a href="https://github.com/10xDotIn" target="_blank" rel="noopener">10xDotIn</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>
