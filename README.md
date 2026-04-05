@@ -1,73 +1,98 @@
-# React + TypeScript + Vite
+# [10x Analyst](https://10xdotin.github.io/10x-analyst/)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> AI-powered data analysis. Upload files. Ask questions. Get insights.
 
-Currently, two official plugins are available:
+**[Visit Site](https://10xdotin.github.io/10x-analyst/)** | [GitHub](https://github.com/10xDotIn/10x-analyst)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## What is it
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Drop a CSV, Excel, or PDF file into the chat and ask anything about your data. The AI analyzes it and streams back insights in real-time — tables, trends, comparisons, summaries.
 
-## Expanding the ESLint configuration
+## Quick start
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/10xDotIn/10x-analyst.git
+cd 10x-analyst
+bash setup.sh
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Windows:** double-click `setup.bat`
+**Mac:** double-click `setup.command`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The installer checks Node.js, installs dependencies, starts both servers, and opens the app at `http://localhost:5173`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Features
+
+- **Real-time streaming** — responses appear word-by-word via SSE, like Claude web
+- **File upload** — CSV, Excel (.xlsx/.xls), PDF, text, markdown
+- **Markdown rendering** — code blocks with copy button, tables, links, headings
+- **Chat history** — SQLite-backed persistence, create/rename/delete conversations
+- **Dark + light mode** — full semantic token design system
+- **Embeddable widget** — deploy as a floating chat button on any website
+- **Active files context** — see which files the AI is using for analysis
+- **One-command setup** — installer scripts for Windows, Mac, and Linux
+
+## Supported file types
+
+| Type | Extensions |
+|------|-----------|
+| CSV | `.csv` |
+| Excel | `.xlsx`, `.xls` |
+| PDF | `.pdf` |
+| Text | `.txt`, `.md` |
+
+## Tech stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19 + Vite 8 |
+| Styling | Tailwind CSS v4 |
+| Language | TypeScript |
+| Backend | Express 5 |
+| Database | SQLite (better-sqlite3) |
+| AI | OpenAnalyst API (SSE streaming) |
+| Icons | Lucide React |
+| File parsing | csv-parse, xlsx, pdf-parse |
+
+## Project structure
+
 ```
+src/
+  App.tsx              — root layout, chat state, streaming logic
+  components/
+    Sidebar.tsx        — persistent sidebar (desktop) / overlay (mobile)
+    WelcomeView.tsx    — greeting, quick actions, file upload
+    ConversationView.tsx — message list, thinking indicator, input
+    MessageItem.tsx    — markdown rendering, code blocks, tables
+    ChatInput.tsx      — textarea with file upload
+    FileChip.tsx       — color-coded file type pills
+    UserMenu.tsx       — login/logout dropdown
+  services/
+    ai.ts             — SSE streaming to OpenAnalyst API
+    chatStore.ts      — chat CRUD via Express backend
+    fileUpload.ts     — file upload service
+server/
+  index.ts            — Express API (chats, messages, file upload)
+  db.ts               — SQLite schema and queries
+  fileParser.ts       — CSV, Excel, PDF, text parsing
+```
+
+## Scripts
+
+| Command | What it does |
+|---------|-------------|
+| `bash setup.sh` | Install + run everything (Mac/Linux) |
+| `setup.bat` | Install + run everything (Windows) |
+| `npm run dev` | Start frontend only |
+| `npm run server` | Start backend only |
+| `npm run build` | Production build |
+
+## License
+
+MIT
+
+---
+
+Built by [10xDotIn](https://github.com/10xDotIn)
