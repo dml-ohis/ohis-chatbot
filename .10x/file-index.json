@@ -1,0 +1,289 @@
+{
+  "vite.config.ts": {
+    "type": "config",
+    "description": "Vite configuration with React, Tailwind CSS v4 plugins, and widget library build mode (--mode widget)",
+    "created_by": "ui-designer",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": [],
+    "exports": ["default config"]
+  },
+  "src/index.css": {
+    "type": "style",
+    "description": "Global design system — semantic color tokens (light + dark), chat-specific tokens (user/bot bubble colors), gradients, shadows, transitions, typography scale, @theme inline block for Tailwind v4, keyframe animations (fade-in, bounce-dot, shimmer, float), and utility classes (text-gradient, focus-ring, glass, gradient-border, shine-on-hover, chat-scrollbar, typing-dots, thinking-indicator, thinking-shimmer-bar, bubble-tail, stagger-children)",
+    "created_by": "ui-designer",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": [],
+    "exports": ["CSS custom properties", "Tailwind theme tokens", "utility classes"],
+    "design_tokens": {
+      "primary": "#2563eb",
+      "palette_name": "professional",
+      "font_family": "Inter",
+      "dark_mode": true,
+      "dark_mode_strategy": "class",
+      "radius": "0.625rem",
+      "radius_vibe": "balanced",
+      "has_gradients": true,
+      "has_animations": true,
+      "has_chart_colors": true,
+      "has_chat_tokens": true
+    }
+  },
+  "src/main.tsx": {
+    "type": "layout",
+    "description": "React app entry point — renders App into root, imports index.css",
+    "created_by": "team-lead",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": ["src/index.css", "src/App.tsx"],
+    "exports": []
+  },
+  "src/App.tsx": {
+    "type": "page",
+    "description": "Root app component — flex layout with persistent sidebar (desktop) / overlay sidebar (mobile) + main area. Hamburger hidden on desktop, mobile branding in header. Sidebar close only triggers on mobile. Manages messages, file uploads, loading/streaming state, sidebar toggle, and theme toggle. Uses sendMessageStream() with onChunk callbacks for real-time text streaming. Tracks activeFiles for AI context. Passes activeFiles to ConversationView for indicator bar.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-05T12:00:00.000Z",
+    "dependencies": [
+      "src/types/chat.ts",
+      "src/services/ai.ts",
+      "src/services/fileUpload.ts",
+      "src/services/chatStore.ts",
+      "src/components/Sidebar.tsx",
+      "src/components/WelcomeView.tsx",
+      "src/components/ConversationView.tsx",
+      "src/components/UserMenu.tsx"
+    ],
+    "exports": ["default App"]
+  },
+  "src/types/chat.ts": {
+    "type": "type",
+    "description": "TypeScript interfaces — UploadedFile (fileId, fileName, fileType, summary, data), Message (id, role, content, timestamp, attachedFiles?), ChatState",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-04T14:00:00.000Z",
+    "dependencies": [],
+    "exports": ["UploadedFile", "Message", "ChatState"]
+  },
+  "src/config/system-prompt.ts": {
+    "type": "config",
+    "description": "System prompt for 10x Analyst AI — data analysis, business metrics, visualization recommendations, comparative analysis, forecasting, data quality. No topic restrictions.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-04T14:00:00.000Z",
+    "dependencies": [],
+    "exports": ["SYSTEM_PROMPT"]
+  },
+  "src/services/ai.ts": {
+    "type": "service",
+    "description": "AI service — SSE streaming via sendMessageStream() with onChunk/onDone/onError callbacks. Parses Anthropic-compatible SSE events (content_block_delta). Falls back to non-streaming on failure. Legacy sendMessage() kept for widget compatibility.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-05T00:00:00.000Z",
+    "dependencies": ["src/config/system-prompt.ts", "src/types/chat.ts"],
+    "exports": ["sendMessageStream", "sendMessage"],
+    "api_shape": {
+      "endpoint": "POST https://api.openanalyst.com/api/v1/messages",
+      "headers": "x-api-key, content-type, anthropic-version",
+      "body": "{ model, max_tokens, stream: true, system, messages }",
+      "response": "SSE stream (content_block_delta events with text deltas)"
+    }
+  },
+  "src/services/fileUpload.ts": {
+    "type": "service",
+    "description": "File upload service — uploadFile() sends file via FormData to POST /api/upload, fetchChatFiles() fetches files for a chat via GET /api/chats/:id/files",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T14:00:00.000Z",
+    "dependencies": ["src/types/chat.ts"],
+    "exports": ["uploadFile", "fetchChatFiles"]
+  },
+  "src/services/chatStore.ts": {
+    "type": "service",
+    "description": "Chat persistence service — CRUD for chats and messages via Express backend at localhost:3001",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": ["src/types/chat.ts"],
+    "exports": ["fetchChats", "createChat", "updateChatTitle", "deleteChat", "fetchMessages", "saveMessage", "ChatSummary"]
+  },
+  "src/components/Sidebar.tsx": {
+    "type": "component",
+    "description": "Left sidebar — persistent on desktop (lg+), overlay on mobile. Navigation items, recent chats list, theme toggle. Header shows '10x Analyst' branding. Collapse button hidden on desktop.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T10:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-05T10:00:00.000Z",
+    "dependencies": [],
+    "exports": ["default Sidebar"]
+  },
+  "src/components/WelcomeView.tsx": {
+    "type": "component",
+    "description": "Welcome state — gradient greeting text with ambient glow decoration, floating Sparkles icon, input box with focus glow shadow, 5 analysis-focused quick action pills with hover lift/shadow/icon color change (Upload CSV triggers file picker + auto-send, Data Analysis, Insights, Compare, Summarize). Send button has stronger active press feedback (0.92 scale).",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T10:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-05T10:00:00.000Z",
+    "dependencies": ["src/types/chat.ts", "src/services/fileUpload.ts", "src/components/FileChip.tsx"],
+    "exports": ["default WelcomeView"]
+  },
+  "src/components/MessageItem.tsx": {
+    "type": "component",
+    "description": "Flat message rendering — 'You' label for user, '10x Analyst' with bot icon for assistant. Shows FileChip for attachedFiles. Inline markdown formatting. Blinking cursor shown during streaming via isStreaming prop. No typewriter hook — content rendered directly.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T10:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-05T00:00:00.000Z",
+    "dependencies": ["src/types/chat.ts", "src/components/FileChip.tsx"],
+    "exports": ["default MessageItem"]
+  },
+  "src/components/ChatInput.tsx": {
+    "type": "component",
+    "description": "Chat input with file upload — rounded-2xl box with textarea, FileUploadButton on left, '10x Analyst' label + send arrow on right. Shows FileChip for each attached file. onSend passes (message, files?).",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-04T14:00:00.000Z",
+    "dependencies": ["src/types/chat.ts", "src/components/FileUploadButton.tsx", "src/components/FileChip.tsx"],
+    "exports": ["default ChatInput", "ChatInput"]
+  },
+  "src/components/FileChip.tsx": {
+    "type": "component",
+    "description": "File chip/pill — type-specific colored icons (green for CSV/Excel, red for PDF, blue for text/MD) with left border accent, truncated file name, optional remove button. Supports compact mode for inline use. Hover effects with shadow-xs.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T14:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-05T12:00:00.000Z",
+    "dependencies": ["src/types/chat.ts"],
+    "exports": ["default FileChip"]
+  },
+  "src/components/FileUploadButton.tsx": {
+    "type": "component",
+    "description": "File upload button — wraps hidden file input, shows Plus icon or Loader2 spinner while uploading. Accepts .csv, .xlsx, .xls, .pdf, .txt, .md files. Calls uploadFile() service and notifies parent via onFileUploaded.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T14:00:00.000Z",
+    "dependencies": ["src/types/chat.ts", "src/services/fileUpload.ts"],
+    "exports": ["default FileUploadButton", "ACCEPTED_TYPES"]
+  },
+  "src/components/ConversationView.tsx": {
+    "type": "component",
+    "description": "Chat conversation state — scrollable message list with MessageItem rendering, shimmer thinking indicator, auto-scroll, active files indicator bar (collapsible, shows file count + compact FileChips), ChatInput disabled during loading/streaming.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T10:00:00.000Z",
+    "modified_by": "frontend-dev",
+    "modified_at": "2026-04-05T12:00:00.000Z",
+    "dependencies": [
+      "src/types/chat.ts",
+      "src/components/MessageItem.tsx",
+      "src/components/ChatInput.tsx",
+      "src/components/FileChip.tsx"
+    ],
+    "exports": ["default ConversationView"]
+  },
+  "src/components/ChatHeader.tsx": {
+    "type": "component",
+    "description": "[DEPRECATED] Old chat header — replaced by Sidebar navigation. Kept for widget mode compatibility.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": [],
+    "exports": ["default ChatHeader"]
+  },
+  "src/components/MessageBubble.tsx": {
+    "type": "component",
+    "description": "[DEPRECATED] Old bubble-style message rendering — replaced by MessageItem.tsx. Kept for widget mode compatibility.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": ["src/types/chat.ts"],
+    "exports": ["default MessageBubble"]
+  },
+  "src/components/TypingIndicator.tsx": {
+    "type": "component",
+    "description": "Typing indicator — 3 bouncing dots in a bot-style bubble, uses .typing-dots CSS class",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": [],
+    "exports": ["default TypingIndicator"]
+  },
+  "src/components/ChatWindow.tsx": {
+    "type": "component",
+    "description": "[DEPRECATED] Old chat message window — replaced by ConversationView.tsx. Kept for widget mode compatibility.",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": [
+      "src/types/chat.ts",
+      "src/components/MessageBubble.tsx",
+      "src/components/TypingIndicator.tsx"
+    ],
+    "exports": ["default ChatWindow"]
+  },
+  "src/components/ChatWidget.tsx": {
+    "type": "component",
+    "description": "Embeddable chat widget — floating button (bottom-right) that opens a popup chat panel, full-screen on mobile, contains full chat UI",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": [
+      "src/types/chat.ts",
+      "src/services/ai.ts",
+      "src/components/ChatHeader.tsx",
+      "src/components/ChatWindow.tsx",
+      "src/components/ChatInput.tsx"
+    ],
+    "exports": ["default ChatWidget"]
+  },
+  "src/widget.tsx": {
+    "type": "layout",
+    "description": "Widget entry point — creates a container div, renders ChatWidget, imports CSS, self-mounts on any page",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": ["src/index.css", "src/components/ChatWidget.tsx"],
+    "exports": []
+  },
+  "widget-embed.html": {
+    "type": "html",
+    "description": "Example HTML page showing how to embed the PM Chatbot widget via script + link tags",
+    "created_by": "frontend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "dependencies": ["dist-widget/pm-chatbot-widget.js", "dist-widget/week-2-project.css"],
+    "exports": []
+  },
+  "server/db.ts": {
+    "type": "lib",
+    "description": "SQLite database setup — chats, messages, and uploaded_files tables with prepared statements for CRUD operations",
+    "created_by": "backend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "backend-dev",
+    "modified_at": "2026-04-04T12:00:00.000Z",
+    "dependencies": [],
+    "exports": ["db", "insertChat", "insertMessage", "updateChatTitle", "updateChatTimestamp", "getAllChats", "getChatMessages", "deleteChat", "deleteChatMessages", "insertFile", "getFilesByChatId", "deleteFilesByChatId"]
+  },
+  "server/index.ts": {
+    "type": "api",
+    "description": "Express server — chat CRUD endpoints + file upload/parse endpoint + files-per-chat endpoint",
+    "created_by": "backend-dev",
+    "created_at": "2026-04-04T00:00:00.000Z",
+    "modified_by": "backend-dev",
+    "modified_at": "2026-04-04T12:00:00.000Z",
+    "dependencies": ["server/db.ts", "server/fileParser.ts"],
+    "exports": [],
+    "api_shape": {
+      "GET /api/chats": { "response": "Chat[]" },
+      "POST /api/chats": { "body": "{ id: string, title: string }", "response": "{ id, title }" },
+      "PATCH /api/chats/:id": { "body": "{ title: string }", "response": "{ id, title }" },
+      "DELETE /api/chats/:id": { "response": "{ deleted: true }" },
+      "GET /api/chats/:id/messages": { "response": "Message[]" },
+      "POST /api/chats/:id/messages": { "body": "{ id, role, content, timestamp? }", "response": "{ id, role, content }" },
+      "POST /api/upload": { "body": "multipart/form-data", "response": "{ data: UploadedFile, error: null }" },
+      "GET /api/chats/:id/files": { "response": "{ data: UploadedFile[], error: null }" }
+    }
+  },
+  "server/fileParser.ts": {
+    "type": "service",
+    "description": "File parser module — parses CSV, Excel, PDF, and text files into structured ParsedFile objects with summaries and formatted data for AI consumption",
+    "created_by": "backend-dev",
+    "created_at": "2026-04-04T12:00:00.000Z",
+    "dependencies": [],
+    "exports": ["parseFile", "ParsedFile"]
+  }
+}

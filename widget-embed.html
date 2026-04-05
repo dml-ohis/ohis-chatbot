@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Widget Embed Example — PM Chatbot</title>
+  <style>
+    /* This is just sample page styling — the widget brings its own styles */
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+    .page-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+    h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+    p { font-size: 1.125rem; color: #64748b; max-width: 600px; }
+    .card {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    code {
+      background: #f1f5f9;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-content">
+    <h1>Your Website</h1>
+    <p>
+      This is an example page showing how to embed the PM Chatbot widget.
+      Look at the bottom-right corner — there is a floating chat button.
+    </p>
+
+    <div class="card">
+      <h2>How to embed</h2>
+      <p>Add this single script tag to any HTML page, just before the closing <code>&lt;/body&gt;</code> tag:</p>
+      <pre><code>&lt;link rel="stylesheet" href="dist-widget/week-2-project.css"&gt;
+&lt;script src="dist-widget/pm-chatbot-widget.js"&gt;&lt;/script&gt;</code></pre>
+      <p style="margin-top: 1rem;">
+        Build the widget first:
+        <code>npx vite build --mode widget</code>
+      </p>
+    </div>
+  </div>
+
+  <!--
+    ============================================================
+    PM CHATBOT WIDGET EMBED
+    ============================================================
+    To embed on your own website:
+    1. Build the widget:  npx vite build --mode widget
+    2. Copy dist-widget/pm-chatbot-widget.js and dist-widget/week-2-project.css to your site
+    3. Add the link + script tags below (update paths as needed)
+    ============================================================
+  -->
+  <link rel="stylesheet" href="dist-widget/week-2-project.css">
+  <script src="dist-widget/pm-chatbot-widget.js"></script>
+</body>
+</html>

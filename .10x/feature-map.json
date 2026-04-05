@@ -1,0 +1,80 @@
+{
+  "design-system": {
+    "name": "Design System",
+    "description": "Complete visual token architecture — professional blue palette, dark mode, chat-specific tokens, typography, shadows, gradients, animations",
+    "status": "completed",
+    "built_by": ["ui-designer"],
+    "files": {
+      "frontend": [
+        { "path": "vite.config.ts", "role": "Vite config with @tailwindcss/vite plugin for Tailwind v4" },
+        { "path": "src/index.css", "role": "CSS variable tokens (light + dark), @theme inline block, base styles, keyframes, utility classes" }
+      ]
+    },
+    "design_decisions": {
+      "palette": "professional",
+      "primary_color": "221 83% 53%",
+      "vibe": "Professional blue — trustworthy and polished for an AI product management chatbot",
+      "radius": "0.625rem",
+      "font": "Inter",
+      "dark_mode": true,
+      "dark_mode_strategy": "class",
+      "tailwind_version": "v4",
+      "chat_tokens": "user bubbles use primary blue, bot bubbles use muted/card surfaces",
+      "custom_utilities": ["chat-scrollbar", "typing-dots", "bubble-tail-left", "bubble-tail-right", "text-gradient", "glass", "shine-on-hover", "stagger-children"]
+    }
+  },
+  "chat-ui": {
+    "name": "Chat UI",
+    "description": "Full chat interface — message bubbles (user right, bot left), auto-scrolling message list, typing indicator with bouncing dots, auto-resizing input with send button, dark mode toggle, welcome state",
+    "status": "completed",
+    "built_by": ["frontend-dev"],
+    "files": {
+      "frontend": [
+        { "path": "src/App.tsx", "role": "Root component — manages messages state, loading state, sends messages via AI service" },
+        { "path": "src/types/chat.ts", "role": "TypeScript interfaces for Message and ChatState" },
+        { "path": "src/components/ChatHeader.tsx", "role": "Header with PM Assistant branding, dark mode toggle, optional close button" },
+        { "path": "src/components/MessageBubble.tsx", "role": "Individual message bubble — user (blue, right) or bot (muted, left) with timestamp" },
+        { "path": "src/components/TypingIndicator.tsx", "role": "3 bouncing dots in a bot-style bubble while AI responds" },
+        { "path": "src/components/ChatInput.tsx", "role": "Auto-resizing textarea + send button, Enter to send, Shift+Enter for newline" },
+        { "path": "src/components/ChatWindow.tsx", "role": "Scrollable message list with auto-scroll, typing indicator, and welcome empty state" }
+      ]
+    },
+    "components_used": ["Lucide icons (Bot, Moon, Sun, SendHorizontal, X, MessageCircle)"],
+    "data_flow": "User types message -> ChatInput.onSend -> App.handleSend -> adds user msg to state -> calls sendMessage() -> adds bot response to state -> ChatWindow re-renders"
+  },
+  "ai-service": {
+    "name": "AI Service",
+    "description": "OpenAnalyst API integration with comprehensive PM-only system prompt — restricts bot to product management topics, politely declines non-PM questions",
+    "status": "completed",
+    "built_by": ["frontend-dev"],
+    "files": {
+      "frontend": [
+        { "path": "src/config/system-prompt.ts", "role": "System prompt defining PM expertise areas, response guidelines, and strict topic restriction" },
+        { "path": "src/services/ai.ts", "role": "API service — POST to OpenAnalyst /messages endpoint, error handling for 429/401/500/network errors" }
+      ]
+    },
+    "data_flow": "App calls sendMessageStream(messages, {onChunk, onDone, onError}) -> ai.ts sends stream:true request -> parses SSE events -> onChunk delivers text deltas in real-time -> onDone fires with full text -> message saved to DB. Falls back to non-streaming on failure.",
+    "api_details": {
+      "provider": "OpenAnalyst",
+      "endpoint": "POST https://api.openanalyst.com/api/v1/messages",
+      "model": "openanalyst-beta",
+      "format": "Anthropic-compatible SSE (stream: true, content_block_delta events)"
+    }
+  },
+  "widget": {
+    "name": "Embeddable Widget",
+    "description": "Floating chat button + popup panel that can be embedded on any website via a script tag — self-contained with its own styles",
+    "status": "completed",
+    "built_by": ["frontend-dev"],
+    "files": {
+      "frontend": [
+        { "path": "src/components/ChatWidget.tsx", "role": "Floating button (bottom-right) + popup chat panel with full chat UI, mobile-responsive" },
+        { "path": "src/widget.tsx", "role": "Widget entry point — self-mounts on any page, creates container, renders ChatWidget" },
+        { "path": "vite.config.ts", "role": "Widget build config (--mode widget) — IIFE library format, outputs dist-widget/" },
+        { "path": "widget-embed.html", "role": "Example HTML showing how to embed the widget with link + script tags" }
+      ]
+    },
+    "build_command": "npx vite build --mode widget",
+    "output_files": ["dist-widget/pm-chatbot-widget.js", "dist-widget/week-2-project.css"]
+  }
+}

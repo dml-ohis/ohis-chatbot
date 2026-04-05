@@ -1,0 +1,165 @@
+{
+  "tasks": [
+    {
+      "id": "task-001",
+      "title": "Set up design system — dark chat theme with semantic tokens",
+      "assigned_to": "ui-designer",
+      "status": "completed",
+      "goal": "Create a polished dark/light design system with semantic tokens for the chatbot UI",
+      "expected_output": ["src/index.css", "tailwind.config.ts"],
+      "acceptance_criteria": [
+        "Semantic color tokens for chat bubbles (user vs bot), background, foreground, muted, borders",
+        "Typography scale defined for chat messages, headings, captions",
+        "Dark mode support with proper token switching",
+        "Custom shadows and border-radius for chat bubble aesthetic"
+      ],
+      "dependencies": [],
+      "created_at": "2026-04-04T00:00:00.000Z"
+    },
+    {
+      "id": "task-002",
+      "title": "Build chat UI — message list, input bar, and typing indicator",
+      "assigned_to": "frontend-dev",
+      "status": "completed",
+      "goal": "Create the full chat interface with message bubbles, input area, and bot typing animation",
+      "expected_output": [
+        "src/App.tsx",
+        "src/components/ChatWindow.tsx",
+        "src/components/MessageBubble.tsx",
+        "src/components/ChatInput.tsx",
+        "src/components/TypingIndicator.tsx",
+        "src/components/ChatHeader.tsx"
+      ],
+      "acceptance_criteria": [
+        "Chat window with scrollable message list",
+        "User messages aligned right, bot messages aligned left with distinct styling",
+        "Input bar with send button, supports Enter to send",
+        "Animated typing indicator (3 bouncing dots) while bot responds",
+        "Auto-scroll to latest message",
+        "Welcome message from bot on first load",
+        "Responsive — works on mobile and desktop",
+        "All colors use semantic tokens — no hardcoded colors",
+        "Smooth transitions on all interactive elements"
+      ],
+      "dependencies": ["task-001"],
+      "created_at": "2026-04-04T00:00:00.000Z"
+    },
+    {
+      "id": "task-003",
+      "title": "Build AI service — OpenAnalyst API integration with PM-only system prompt",
+      "assigned_to": "frontend-dev",
+      "status": "completed",
+      "goal": "Create the API service that calls OpenAnalyst with a strict product management system prompt",
+      "expected_output": [
+        "src/services/ai.ts",
+        "src/config/system-prompt.ts"
+      ],
+      "acceptance_criteria": [
+        "System prompt restricts bot to product management topics only",
+        "Bot politely declines non-PM questions",
+        "Uses OpenAnalyst API at https://api.openanalyst.com/api",
+        "Handles errors gracefully with user-friendly messages",
+        "Supports streaming or non-streaming response"
+      ],
+      "dependencies": ["task-002"],
+      "created_at": "2026-04-04T00:00:00.000Z"
+    },
+    {
+      "id": "task-004",
+      "title": "Build embeddable widget mode — floating chat button + popup",
+      "assigned_to": "frontend-dev",
+      "status": "completed",
+      "goal": "Create a widget version that can be embedded on any website via a script tag",
+      "expected_output": [
+        "src/components/ChatWidget.tsx",
+        "src/widget.tsx",
+        "widget-embed.html"
+      ],
+      "acceptance_criteria": [
+        "Floating chat button in bottom-right corner",
+        "Click opens chat popup with smooth animation",
+        "Close button to minimize back to floating button",
+        "Widget can be embedded via a single script tag",
+        "Example embed HTML file provided",
+        "Widget works independently on any website",
+        "Responsive — adapts size on mobile vs desktop"
+      ],
+      "dependencies": ["task-003"],
+      "created_at": "2026-04-04T00:00:00.000Z"
+    },
+    {
+      "id": "task-006",
+      "title": "Fix AI response streaming — fast word-by-word reveal like Claude web",
+      "assigned_to": "frontend-dev",
+      "status": "completed",
+      "goal": "Replace non-streaming API call + slow typewriter with real SSE streaming that delivers text chunk-by-chunk as the API produces it",
+      "expected_output": ["src/services/ai.ts", "src/App.tsx", "src/components/MessageItem.tsx"],
+      "acceptance_criteria": [
+        "AI responses appear word-by-word as the API streams them",
+        "Response text appears at Claude-web-like speed (real-time, not 18ms/char)",
+        "Falls back gracefully if streaming fails",
+        "All existing functionality preserved (file upload, chat history, etc.)"
+      ],
+      "dependencies": ["task-003"],
+      "created_at": "2026-04-05T00:00:00.000Z"
+    },
+    {
+      "id": "task-007",
+      "title": "Polish thinking/generating indicator — clear visual states during AI response",
+      "assigned_to": "frontend-dev",
+      "status": "completed",
+      "goal": "Replace bouncing dots with Sparkles icon + shimmer animation + 'Thinking...' text, blinking cursor during streaming",
+      "expected_output": ["src/components/ConversationView.tsx", "src/index.css"],
+      "acceptance_criteria": [
+        "Thinking indicator shows with shimmer animation while waiting for first chunk",
+        "Blinking cursor appears at end of message while still streaming",
+        "Smooth transitions on all state changes",
+        "All colors use semantic tokens"
+      ],
+      "dependencies": ["task-006"],
+      "created_at": "2026-04-05T00:00:00.000Z"
+    },
+    {
+      "id": "task-015",
+      "title": "Polish WelcomeView — gradient text, quick action micro-interactions, input glow",
+      "assigned_to": "frontend-dev",
+      "status": "completed",
+      "goal": "Add visual polish to WelcomeView: gradient greeting text, floating icon animation, input focus glow, quick action hover lift with icon color change, ambient background glow, stronger send button press feedback",
+      "expected_output": ["src/components/WelcomeView.tsx"],
+      "acceptance_criteria": [
+        "Greeting has gradient text on user name/role",
+        "Sparkles icon uses float animation",
+        "Quick action pills lift on hover with shadow and border color change",
+        "Quick action pill icons change color on hover via group-hover",
+        "Input box gets glow shadow on focus",
+        "Subtle radial gradient glow behind greeting",
+        "Send button has active:scale-[0.92] for stronger press feedback",
+        "All colors use semantic tokens",
+        "Stagger entrance animations work"
+      ],
+      "dependencies": [],
+      "created_at": "2026-04-05T10:00:00.000Z"
+    }
+    ,
+    {
+      "id": "task-017",
+      "title": "Add active files indicator + polish file chips with type-specific colors",
+      "assigned_to": "frontend-dev",
+      "status": "completed",
+      "goal": "Add type-specific color coding to FileChip (green for CSV/Excel, red for PDF, blue for text/MD) and a collapsible active files indicator bar in ConversationView",
+      "expected_output": ["src/components/FileChip.tsx", "src/components/ConversationView.tsx", "src/App.tsx"],
+      "acceptance_criteria": [
+        "CSV/Excel file chips have green-tinted icon and left border accent",
+        "PDF file chips have red-tinted icon and left border accent",
+        "Text/MD file chips have blue-tinted icon and left border accent",
+        "Active files bar appears in conversation view when files are loaded",
+        "Active files bar shows file count, expands to show file names on click",
+        "Active files bar is collapsible (collapsed by default)",
+        "All colors use semantic tokens",
+        "Chips have hover effects and transitions"
+      ],
+      "dependencies": [],
+      "created_at": "2026-04-05T12:00:00.000Z"
+    }
+  ]
+}
