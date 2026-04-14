@@ -1,7 +1,7 @@
 import { SYSTEM_PROMPT } from '../config/system-prompt'
 import type { Message } from '../types/chat'
 
-const API_BASE_URL = 'https://api.openanalyst.com/api'
+const API_BASE_URL = 'https://api.openanalyst.com'
 const API_KEY = import.meta.env.VITE_OPENANALYST_API_KEY as string
 const MODEL = 'openanalyst-beta'
 
