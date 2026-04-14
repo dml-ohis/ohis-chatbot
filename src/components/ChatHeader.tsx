@@ -1,4 +1,4 @@
-import { BarChart3, Moon, Sun, X } from 'lucide-react'
+import { Moon, Sun, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface ChatHeaderProps {
@@ -28,11 +28,16 @@ export default function ChatHeader({ onClose, className = '' }: ChatHeaderProps)
     >
       <div className="flex items-center gap-3">
         <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-foreground/15 backdrop-blur-sm">
-          <BarChart3 className="h-5 w-5" />
+          <img
+            src="/OHIS_logo-Blue-transparent.png"
+            alt="OHIS logo"
+            className="h-7 w-7 object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
         </div>
         <div>
           <h1 className="text-base font-semibold leading-tight">
-            10x Analyst
+            OHIS — Home Inspection Consultant
           </h1>
           <div className="flex items-center gap-1.5 mt-0.5">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse-soft" />

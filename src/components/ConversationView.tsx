@@ -61,10 +61,10 @@ export default function ConversationView({
                 <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/15">
                   <Sparkles className="h-3.5 w-3.5 text-primary animate-spin-slow" />
                 </div>
-                <span className="text-sm font-semibold text-foreground">10x Analyst</span>
+                <span className="text-sm font-semibold text-foreground">OHIS</span>
               </div>
               <div className="pl-8">
-                <div className="thinking-indicator" aria-label="Analyst is thinking">
+                <div className="thinking-indicator" aria-label="OHIS is thinking">
                   <div className="thinking-shimmer-bar" />
                   <span className="text-sm text-muted-foreground animate-pulse-soft">
                     Thinking...

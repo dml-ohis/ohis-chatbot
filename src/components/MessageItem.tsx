@@ -384,7 +384,7 @@ export default function MessageItem({
           </div>
         )}
         <span className="text-sm font-semibold text-foreground">
-          {isUser ? 'You' : '10x Analyst'}
+          {isUser ? 'You' : 'OHIS'}
         </span>
       </div>
 

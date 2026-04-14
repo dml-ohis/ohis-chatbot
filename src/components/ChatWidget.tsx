@@ -1,4 +1,4 @@
-import { BarChart3, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import type { Message } from '../types/chat'
 import { sendMessage } from '../services/ai'
@@ -10,7 +10,7 @@ const WELCOME_MESSAGE: Message = {
   id: 'welcome',
   role: 'assistant',
   content:
-    "Hi! I'm 10x Analyst — your AI data analysis assistant. Upload a file or ask a question to get started.",
+    "Hi! I'm your OHIS virtual consultant — your personal home inspection guide. Ask me about inspections, pricing, scheduling, or our service areas.",
   timestamp: new Date(),
 }
 
@@ -74,7 +74,7 @@ export default function ChatWidget({ className = '' }: ChatWidgetProps) {
         <div
           className="fixed bottom-24 right-6 w-[400px] h-[560px] max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:bottom-0 max-sm:right-0 max-sm:rounded-none bg-background flex flex-col animate-scale-in z-[99998]"
           role="dialog"
-          aria-label="10x Analyst chat"
+          aria-label="OHIS chat"
           style={{ borderRadius: '16px', overflow: 'hidden', boxShadow: '0 25px 60px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08)' }}
         >
           <ChatHeader onClose={() => setIsOpen(false)} />
@@ -91,10 +91,19 @@ export default function ChatWidget({ className = '' }: ChatWidgetProps) {
             ? 'bg-muted text-muted-foreground hover:bg-accent'
             : 'bg-primary text-primary-foreground hover:shadow-glow'
         }`}
-        aria-label={isOpen ? 'Close chat' : 'Open 10x Analyst chat'}
+        aria-label={isOpen ? 'Close chat' : 'Open OHIS chat'}
         style={{ pointerEvents: 'auto' }}
       >
-        {isOpen ? <X className="h-5 w-5" /> : <BarChart3 className="h-6 w-6" />}
+        {isOpen ? (
+          <X className="h-5 w-5" />
+        ) : (
+          <img
+            src="/OHIS_logo-Blue-transparent.png"
+            alt="OHIS"
+            className="h-8 w-8 object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        )}
       </button>
     </div>
   )

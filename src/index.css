@@ -191,31 +191,31 @@
 :root {
   /* Page backgrounds */
   --background: 0 0% 98%;
-  --foreground: 222 47% 11%;
+  --foreground: 221 47% 11%;
 
   /* Cards and elevated surfaces */
   --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+  --card-foreground: 221 47% 11%;
 
   /* Popovers, dropdowns, tooltips */
   --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
+  --popover-foreground: 221 47% 11%;
 
-  /* Primary brand — professional blue */
-  --primary: 221 83% 53%;
+  /* Primary brand — Navy Blue #1B2A4A */
+  --primary: 221 47% 20%;
   --primary-foreground: 210 40% 98%;
 
   /* Secondary supporting */
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 222 47% 11%;
+  --secondary: 221 20% 94%;
+  --secondary-foreground: 221 47% 11%;
 
   /* Muted / subtle */
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
+  --muted: 221 20% 94%;
+  --muted-foreground: 221 16% 47%;
 
-  /* Accent highlights */
-  --accent: 210 40% 93%;
-  --accent-foreground: 222 47% 11%;
+  /* Accent highlights — subtle gold tint */
+  --accent: 44 40% 92%;
+  --accent-foreground: 221 47% 11%;
 
   /* Semantic states */
   --destructive: 0 84% 60%;
@@ -223,30 +223,30 @@
   --success: 142 76% 36%;
   --success-foreground: 210 40% 98%;
   --warning: 38 92% 50%;
-  --warning-foreground: 222 47% 11%;
+  --warning-foreground: 221 47% 11%;
   --info: 199 89% 48%;
   --info-foreground: 210 40% 98%;
 
   /* Borders and inputs */
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 221 83% 53%;
+  --border: 221 25% 88%;
+  --input: 221 25% 88%;
+  --ring: 221 47% 20%;
 
   /* Radius */
   --radius: 0.625rem;
 
   /* Chat-specific tokens */
-  --chat-user-bg: 221 83% 53%;
+  --chat-user-bg: 221 47% 20%;
   --chat-user-text: 210 40% 98%;
-  --chat-bot-bg: 210 40% 96%;
-  --chat-bot-text: 222 47% 11%;
+  --chat-bot-bg: 221 20% 94%;
+  --chat-bot-text: 221 47% 11%;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(221 83% 40%));
+  --gradient-primary: linear-gradient(135deg, hsl(221 47% 20%), hsl(44 54% 54%));
   --gradient-hero: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
   --gradient-card-hover: linear-gradient(135deg, hsl(var(--primary) / 0.05), hsl(var(--primary) / 0.02));
   --gradient-shine: linear-gradient(110deg, transparent 25%, hsl(var(--primary) / 0.1) 50%, transparent 75%);
-  --gradient-text: linear-gradient(135deg, hsl(var(--primary)), hsl(221 83% 40%));
+  --gradient-text: linear-gradient(135deg, hsl(221 47% 20%), hsl(44 54% 45%));
 
   /* Shadows */
   --shadow-xs: 0 1px 2px 0 hsl(var(--foreground) / 0.05);
@@ -265,9 +265,9 @@
   --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Chart colors */
-  --chart-1: 221 83% 53%;
+  --chart-1: 221 47% 20%;
   --chart-2: 160 60% 45%;
-  --chart-3: 38 92% 50%;
+  --chart-3: 44 54% 54%;
   --chart-4: 280 65% 60%;
   --chart-5: 0 84% 60%;
 }
@@ -276,61 +276,62 @@
    DARK MODE — All tokens overridden for dark backgrounds
    ================================================================ */
 .dark {
-  --background: 222 47% 5%;
-  --foreground: 210 40% 98%;
+  --background: 221 47% 6%;
+  --foreground: 210 40% 96%;
 
-  --card: 222 47% 8%;
-  --card-foreground: 210 40% 98%;
+  --card: 221 47% 10%;
+  --card-foreground: 210 40% 96%;
 
-  --popover: 222 47% 8%;
-  --popover-foreground: 210 40% 98%;
+  --popover: 221 47% 10%;
+  --popover-foreground: 210 40% 96%;
 
-  --primary: 217 91% 60%;
-  --primary-foreground: 222 47% 5%;
+  /* Primary — Gold #C9A84C (brightened for dark bg) */
+  --primary: 44 60% 55%;
+  --primary-foreground: 221 47% 10%;
 
-  --secondary: 217 33% 12%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 221 35% 14%;
+  --secondary-foreground: 210 40% 96%;
 
-  --muted: 217 33% 12%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 221 35% 14%;
+  --muted-foreground: 221 20% 65%;
 
-  --accent: 217 33% 15%;
-  --accent-foreground: 210 40% 98%;
+  --accent: 221 35% 18%;
+  --accent-foreground: 210 40% 96%;
 
   --destructive: 0 62% 54%;
   --destructive-foreground: 210 40% 98%;
 
   --success: 142 69% 45%;
-  --success-foreground: 222 47% 5%;
+  --success-foreground: 221 47% 6%;
 
   --warning: 38 92% 50%;
-  --warning-foreground: 222 47% 5%;
+  --warning-foreground: 221 47% 6%;
 
   --info: 199 89% 48%;
-  --info-foreground: 222 47% 5%;
+  --info-foreground: 221 47% 6%;
 
-  --border: 217 33% 17%;
-  --input: 217 33% 17%;
-  --ring: 217 91% 60%;
+  --border: 221 35% 20%;
+  --input: 221 35% 20%;
+  --ring: 44 60% 55%;
 
   /* Chat-specific — dark mode */
-  --chat-user-bg: 217 91% 60%;
-  --chat-user-text: 222 47% 5%;
-  --chat-bot-bg: 222 47% 11%;
-  --chat-bot-text: 210 40% 98%;
+  --chat-user-bg: 44 60% 55%;
+  --chat-user-text: 221 47% 10%;
+  --chat-bot-bg: 221 47% 14%;
+  --chat-bot-text: 210 40% 96%;
 
   /* Gradients — dark mode */
-  --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(217 91% 45%));
-  --gradient-hero: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(222 47% 8%) 100%);
+  --gradient-primary: linear-gradient(135deg, hsl(44 60% 55%), hsl(44 60% 70%));
+  --gradient-hero: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(221 47% 10%) 100%);
   --gradient-card-hover: linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--primary) / 0.03));
-  --gradient-text: linear-gradient(135deg, hsl(var(--primary)), hsl(217 91% 72%));
+  --gradient-text: linear-gradient(135deg, hsl(44 70% 60%), hsl(44 90% 78%));
 
   /* Shadows — dark mode (more diffused) */
   --shadow-elegant-value: 0 10px 30px -10px hsl(var(--primary) / 0.3);
   --shadow-glow-value: 0 0 40px hsl(var(--primary) / 0.2);
 
   /* Chart colors — slightly brighter for dark backgrounds */
-  --chart-1: 217 91% 60%;
+  --chart-1: 44 60% 55%;
   --chart-2: 160 70% 50%;
   --chart-3: 38 92% 55%;
   --chart-4: 280 75% 65%;

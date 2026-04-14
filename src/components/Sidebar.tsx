@@ -79,7 +79,7 @@ export default function Sidebar({
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4">
           <h2 className="text-base font-semibold text-foreground tracking-tight">
-            10x Analyst
+            OHIS
           </h2>
           <button
             onClick={onToggle}

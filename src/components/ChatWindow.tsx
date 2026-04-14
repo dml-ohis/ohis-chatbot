@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import type { Message } from '../types/chat'
 import MessageBubble from './MessageBubble'
 import TypingIndicator from './TypingIndicator'
-import { BarChart3, FileUp, MessageSquare, Sparkles } from 'lucide-react'
+import { Calendar, ClipboardList, HelpCircle } from 'lucide-react'
 
 interface ChatWindowProps {
   messages: Message[]
@@ -18,9 +18,9 @@ function StarterPrompts() {
       </p>
       <div className="space-y-2">
         {[
-          { icon: FileUp, text: 'Upload CSV, Excel, or PDF files' },
-          { icon: MessageSquare, text: 'Ask questions about your data' },
-          { icon: Sparkles, text: 'Get trends & recommendations' },
+          { icon: Calendar, text: 'Schedule a home inspection' },
+          { icon: ClipboardList, text: 'Learn what a home inspection covers' },
+          { icon: HelpCircle, text: 'Get answers to common questions' },
         ].map(({ icon: Icon, text }) => (
           <div
             key={text}
@@ -55,13 +55,18 @@ export default function ChatWindow({ messages, isLoading, className = '' }: Chat
       >
         <div className="text-center max-w-sm animate-fade-in-up">
           <div className="flex items-center justify-center w-14 h-14 mx-auto rounded-2xl bg-primary text-primary-foreground mb-4">
-            <BarChart3 className="h-7 w-7" />
+            <img
+              src="/OHIS_logo-Blue-transparent.png"
+              alt="OHIS logo"
+              className="h-9 w-9 object-contain"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
           </div>
           <h2 className="text-lg font-semibold text-foreground mb-2">
-            10x Analyst
+            OHIS — Home Inspection Consultant
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Upload data files and ask questions to get AI-powered insights.
+            Your personal guide to home inspections, pricing, and scheduling.
           </p>
         </div>
       </div>

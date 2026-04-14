@@ -29,15 +29,10 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [isDark, setIsDark] = useState(true)
+  const [isDark, setIsDark] = useState(false)
   const [userName, setUserName] = useState<string | null>(() => {
     return localStorage.getItem('pm-chatbot-user')
   })
-
-  // Default to dark mode on mount
-  useEffect(() => {
-    document.documentElement.classList.add('dark')
-  }, [])
 
   // Sync dark mode class
   useEffect(() => {
@@ -297,7 +292,7 @@ export default function App() {
               <Menu className="h-5 w-5" />
             </button>
             <span className="text-sm font-semibold text-foreground lg:hidden">
-              10x Analyst
+              OHIS
             </span>
           </div>
 

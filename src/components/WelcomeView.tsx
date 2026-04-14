@@ -1,4 +1,4 @@
-import { ArrowUp, BarChart3, FileText, GitCompare, Lightbulb, Loader2, Sparkles, Upload } from 'lucide-react'
+import { ArrowUp, Calendar, DollarSign, HelpCircle, Info, Loader2, MapPin, Upload } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { uploadFile } from '../services/fileUpload'
 import type { UploadedFile } from '../types/chat'
@@ -15,39 +15,31 @@ interface QuickAction {
 
 const quickActions: QuickAction[] = [
   {
-    label: 'Upload CSV',
-    icon: Upload,
-    message: 'Analyze this file and give me key insights',
-    triggersUpload: true,
+    label: 'Schedule Inspection',
+    icon: Calendar,
+    message: 'I would like to schedule a home inspection. What are my options?',
   },
   {
-    label: 'Data Analysis',
-    icon: BarChart3,
-    message: 'How do I analyze trends in my data?',
+    label: 'Get a Quote',
+    icon: DollarSign,
+    message: 'How much does a home inspection cost? Can I get a quote?',
   },
   {
-    label: 'Insights',
-    icon: Lightbulb,
-    message: 'What insights can you find in my uploaded data?',
+    label: 'FAQs',
+    icon: HelpCircle,
+    message: 'What are the most frequently asked questions about home inspections?',
   },
   {
-    label: 'Compare',
-    icon: GitCompare,
-    message: 'Compare the key metrics across categories',
+    label: 'Service Areas',
+    icon: MapPin,
+    message: 'What areas does OHIS serve in the Orlando region?',
   },
   {
-    label: 'Summarize',
-    icon: FileText,
-    message: 'Summarize the key findings from my data',
+    label: 'About OHIS',
+    icon: Info,
+    message: 'Tell me about Orlando Home Inspection Services (OHIS) and what makes you different.',
   },
 ]
-
-function getGreeting(): string {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'Morning'
-  if (hour < 17) return 'Afternoon'
-  return 'Evening'
-}
 
 interface WelcomeViewProps {
   onSend: (message: string, files?: UploadedFile[]) => void
@@ -167,17 +159,24 @@ export default function WelcomeView({ onSend, disabled = false, userName, classN
       />
 
       {/* Greeting */}
-      <div className="relative flex items-center gap-3 mb-8">
+      <div className="relative flex flex-col items-center text-center gap-4 mb-8">
         {/* Subtle ambient glow behind greeting */}
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/5 blur-3xl pointer-events-none"
           aria-hidden="true"
         />
-        <Sparkles className="relative h-8 w-8 text-primary animate-float" />
+        <img
+          src="/OHIS_logo-Blue-transparent.png"
+          alt="OHIS logo"
+          className="relative h-16 w-16 object-contain animate-float"
+        />
         <h1 className="relative text-3xl sm:text-4xl font-light text-foreground tracking-tight">
-          {getGreeting()},{' '}
-          <span className="text-gradient font-semibold">{userName || 'Analyst'}</span>
+          Welcome to{' '}
+          <span className="text-gradient font-semibold">Orlando Home Inspection Services</span>
         </h1>
+        <p className="relative text-base text-muted-foreground max-w-lg italic">
+          We Inspect Little Details That Make A Big Difference.
+        </p>
       </div>
 
       {/* Input box */}
@@ -208,7 +207,7 @@ export default function WelcomeView({ onSend, disabled = false, userName, classN
             value={value}
             onChange={handleInput}
             onKeyDown={handleKeyDown}
-            placeholder="Ask a question or upload a file to analyze..."
+            placeholder="Ask about home inspections, pricing, or scheduling..."
             disabled={disabled}
             rows={2}
             className="w-full resize-none bg-transparent px-4 pt-4 pb-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
@@ -231,9 +230,6 @@ export default function WelcomeView({ onSend, disabled = false, userName, classN
             </button>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground select-none hidden sm:inline">
-                10x Analyst
-              </span>
               <button
                 onClick={handleSend}
                 disabled={!canSend}
