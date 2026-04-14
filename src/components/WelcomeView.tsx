@@ -48,7 +48,7 @@ interface WelcomeViewProps {
   className?: string
 }
 
-export default function WelcomeView({ onSend, disabled = false, userName, className = '' }: WelcomeViewProps) {
+export default function WelcomeView({ onSend, disabled = false, className = '' }: WelcomeViewProps) {
   const [value, setValue] = useState('')
   const [attachedFiles, setAttachedFiles] = useState<UploadedFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
