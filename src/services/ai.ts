@@ -134,8 +134,8 @@ export async function sendMessageStream(
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'Authorization': \"Bearer \$\{API_KEY\}\",
-        'anthropic-auth-token': API_KEY,
+        'x-api-key': API_KEY,
+        
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
@@ -206,8 +206,8 @@ async function sendMessageFallback(messages: Message[], fileContext?: string): P
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      'Authorization': \"Bearer \$\{API_KEY\}\",
-        'anthropic-auth-token': API_KEY,
+      'x-api-key': API_KEY,
+        
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
