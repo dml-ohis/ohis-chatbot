@@ -1,7 +1,7 @@
 import { SYSTEM_PROMPT } from '../config/system-prompt'
 import type { Message } from '../types/chat'
 
-const API_BASE_URL = 'https://api.openanalyst.com'
+const API_BASE_URL = 'https://api.openanalyst.com/api'
 const API_KEY = import.meta.env.VITE_OPENANALYST_API_KEY as string
 const MODEL = 'openanalyst-beta'
 
@@ -134,7 +134,8 @@ export async function sendMessageStream(
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'x-api-key': API_KEY,
+        'Authorization': \"Bearer \$\{API_KEY\}\",
+        'anthropic-auth-token': API_KEY,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
@@ -205,7 +206,8 @@ async function sendMessageFallback(messages: Message[], fileContext?: string): P
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      'x-api-key': API_KEY,
+      'Authorization': \"Bearer \$\{API_KEY\}\",
+        'anthropic-auth-token': API_KEY,
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
